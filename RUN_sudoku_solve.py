@@ -34,17 +34,37 @@ puzzle = np.array(puzzle_list)
 
 #%% Test high-level solver
 
-print('Number of empty elements = {}'.format((puzzle==emptyKey).sum()))
+num_empty_elem = (puzzle==emptyKey).sum()
+new_num_empty_elem = num_empty_elem
 
-for row in range(9):
-    for col in range(9):
-        if puzzle[row,col] == emptyKey:
-            options = [1,2,3,4,5,6,7,8,9]
-            options = check_col(puzzle,col,options)
-            options = check_row(puzzle,row,options)
-#            options = cell_check(options)
-            if len(options) == 1:
-                puzzle[row,col] = options[0]
-                
-print('Now, number of empty elements = {}'.format((puzzle==emptyKey).sum()))
+print('Number of empty elements = {}'.format(num_empty_elem))
+# Initialize loop counter
+cycle_num = 1
+
+# Continue as long as making progress
+while True:
+    
+    # Re-initialize starting number of empty elemnts
+    num_empty_elem = (puzzle==emptyKey).sum()
+    
+    for row in range(9):
+        for col in range(9):
+            if puzzle[row,col] == emptyKey:
+                options = [1,2,3,4,5,6,7,8,9]
+                options = check_col(puzzle,col,options)
+                options = check_row(puzzle,row,options)
+    #            options = cell_check(options)
+                if len(options) == 1:
+                    puzzle[row,col] = options[0]
+    
+    # Check to see how many empty elements there are now                
+    new_num_empty_elem = (puzzle==emptyKey).sum() 
+    
+    # Break loop if no progress was made        
+    if new_num_empty_elem==num_empty_elem:
+        break
+    else:
+        print('Round {}: number of empty elements = {}'.format(cycle_num, new_num_empty_elem))
+        cycle_num = cycle_num+1
+
 

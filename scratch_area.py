@@ -29,15 +29,17 @@ emptyKey = 0
 #         [0,0,2,4,0,5,3,7,0],
 #         [3,7,4,0,2,0,5,0,1]])
 
-puzzle = [[0,4,9,0,3,1,0,0,7], 
+puzzle_list = [[0,4,9,0,3,1,0,0,7], 
          [0,3,0,0,7,0,9,8,0],
          [8,0,7,0,4,0,0,0,3],
          [0,0,6,1,5,7,8,3,2],
          [7,5,3,2,8,4,1,0,6],
          [0,1,0,3,0,0,7,4,5],
          [0,8,5,7,0,3,4,0,9],
-         [0,0,2,4,0,5,3,7,0],
+         [0,0,2,4,0,5,3,7,8],
          [3,7,4,0,2,0,5,0,1]]
+
+puzzle = np.array(puzzle_list)
 
 #%% Test row solve
 
@@ -66,25 +68,29 @@ check_row(input_test)
 
 #%% Test box solve
 
-#%% Test high-level solver
-# Input is array
-# Output is options that work
+#%% Check column
+def check_col(input_puzzle, col, options):
+    
+    new_options = [digit for digit in options if digit not in input_puzzle[:,col]] 
+    
+    return new_options
 
-# for row in range(1,10)
-# for col in range(1,10)
-# 
+test_row = 1
+test_column = 8
+options = [1,2,3,4,5,6,7,8,9]
+new_options = check_col(puzzle, test_column, options)
 
-#%% Check row
+#%% Check row for np
 def check_row(input_puzzle, row, options):
     
 #    # Long form
 #    new_options = []
 #    for digit in options:
-#        if digit not in input_puzzle[row][:]:
+#        if digit not in input_puzzle[row,:]:
 #            new_options.append(digit)
     
     # Compact form
-    new_options = [digit for digit in options if digit not in input_puzzle[row][:]] 
+    new_options = [digit for digit in options if digit not in input_puzzle[row,:]] 
     
     return new_options
 
@@ -92,3 +98,21 @@ test_row = 4
 test_column = 7
 options = [1,2,3,4,5,6,7,8,9]
 new_options = check_row(puzzle, test_row, options)
+
+#%% Test high-level solver
+
+print('Number of empty elements = {}'.format((puzzle==emptyKey).sum()))
+
+for row in range(9):
+    for col in range(9):
+        if puzzle[row,col] == emptyKey:
+            options = [1,2,3,4,5,6,7,8,9]
+            options = check_col(puzzle,col,options)
+            options = check_row(puzzle,row,options)
+#            options = cell_check(options)
+            if len(options) == 1:
+                puzzle[row,col] = options[0]
+                
+print('Now, number of empty elements = {}'.format((puzzle==emptyKey).sum()))
+   
+

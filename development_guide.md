@@ -1,26 +1,28 @@
-# sudoku
+# Sudoku
 Solve an input Sudoku puzzle
 
 ## Prompt
 
-You are on a team tasked with developing a Sudoku (add link to wikipedia) application. You are leading one feature of the application: an automatic Sudoku Solver.
+You are on a team tasked with developing a [Sudoku](https://en.wikipedia.org/wiki/Sudoku) application. You are leading one feature of the application: an automatic Sudoku Solver.
 
-Input: Sudoku puzzle
+**Input**: Sudoku puzzle
 
-Output: Solved Sudoku puzzle
+**Output**: Solved Sudoku puzzle
 
 ## Project Planning
 
-Where to begin? Before even writing code, lay out your plan for the project. This will help shape the structure of your project, including the need to develop any custom functions.
+Where to begin? Before even writing code, lay out your plan for the project. This will help shape the structure of your project: the algorithms, main functions, and supporting utilities.
 
-Sudoku (add link to wikipedia) is a puzzle where a 9x9 grid (see picture below) is partially filled with the digits 1, 2, ... up to 9. The grid also shows 9 individual 3x3 grids which comprise the overall grid. 
+Sudoku is a puzzle where a 9x9 grid (see picture below) is partially filled with the digits 1, 2, ... up to 9. The grid also shows 9 individual 3x3 grids which comprise the overall grid. 
 
-To fill the puzzle, there are three rules:
+![](\easy_sudoku.PNG)
+
+Three rules apply to a completed puzzle:
 1. Each column must have exactly one instance of each digit 1-9
 2. Each row must have exactly one instance of each digit 1-9
 3. Each 3x3 cell (distinctly shown, non-overlapping) must have exactly one instance of each digit 1-9
 
-By applying these rules to an empty cell, you can deduce what possible digits can fit in a cell. If there is only one option, you know the remaining digit must be the answer.
+By applying these rules to an empty cell, you can deduce which possible digits can fit in a cell. If there is only one option, then that digit must be the answer.
 
 In pseudocode:
 
@@ -41,11 +43,62 @@ for each cell:
     options = column_check(options)
     options = row_check(options)
     options = cell_check(options)
-    if only one option::
+    if only one option:
         fill in cell with option
 ```
 
-High level flow diagrams
+What does the ```for each cell``` look like? A puzzle is a 9x9 grid. Denoting a row as ```i``` and a column as ```j```, then for a puzzle ```P```, every element can represented as ```P[i][j]```.
+
+The algorithm only applies to unsolved elements of ```P[i][j]```, so before applying each rule, check if the cell is empty.
+
+```
+for row in 1...9:
+    for col in 1...9:
+        if P[i][j] is empty:
+            options = [1,2,3,4,5,6,7,8,9]
+            options = column_check(options)
+            options = row_check(options)
+            options = cell_check(options)
+            if length(option) == 1:
+                P[i][j] = option
+```
+
+After looping through each cell, some cells should be filled in. Now what? Most likely, the puzzle will not be solved in a single round. However a cell that previously had 2 or more options may now be solvable if one of the options was filled in later in the loop.
+
+As long as progress as being made, the solve cycle should continue. 
+
+```
+while making_progress
+    for row in 1...9:
+        for col in 1...9:
+            if P[i][j] is empty:
+                options = [1,2,3,4,5,6,7,8,9]
+                options = column_check(options)
+                options = row_check(options)
+                options = cell_check(options)
+                if length(option) == 1:
+                    P[i][j] = option
+```
+
+How to quantify making progress? If the number of empty elements is less after executing the loops, progress was made.
+
+```
+making_progress = True
+while making_progress
+    num_unsolved = sum(P==empty)
+    for row in 1...9:
+        for col in 1...9:
+            if P[i][j] is empty:
+                options = [1,2,3,4,5,6,7,8,9]
+                options = column_check(options)
+                options = row_check(options)
+                options = cell_check(options)
+                if length(option) == 1:
+                    P[i][j] = option
+    if sum(P==empty) == num_unsolved:
+        making_progress = False
+
+```
 
 ## Function / class methods
 
