@@ -102,9 +102,41 @@ while making_progress
 
 ## Function / class methods
 
-solveRow
-solveColumn
-solveBox
+### column_check
+
+In column_check, you are given an input list of potential digits that could fit in a cell, and want to return the subset of those options based on what already exists in the column. In pseudocode:
+
+```
+def column_check(options):
+    loop through elements in column:
+        if element in options found, remove from options list
+
+```
+
+By default we had only ***options*** as an input parameter, but to loop through elements in the column, we'll need to know those elements. The input could be simply the list of elements to check, but to be more intuitive with the name, the inputs would be the entire puzzle, then the column index to check.
+
+```
+def column_check(puzzle, column_index, options):
+    for element in puzzle[:,column_index]:
+        if element in options:
+            options.remove(element)
+    return options
+
+```
+
+If you are familiar with list comprehension, you can condense the lines of code. The below example builds the possible list of options up instead of removing the found options:
+
+```
+def check_col(puzzle, col_idx, options):
+    
+    new_options = [digit for digit in options if digit not in puzzle[:,col_idx]] 
+    
+    return new_options
+```
+
+### row_check
+
+### cell_check
 
 Loop through all elements
 
