@@ -2,7 +2,7 @@
 """
 Created on Sat Jan 18 13:49:33 2020
 
-@author: benja
+@author: Ben Walsh
 """
 
 #%% Check column
@@ -42,9 +42,16 @@ def check_cell(input_puzzle, row, col, options):
 
 #%% Save puzzles as an example
 
+# Could be hidden method in class
+def display_sudoku_row(in_list):
+    print('| {} {} {} | {} {} {} | {} {} {} |'.format(in_list[0],in_list[1],in_list[2],
+                                  in_list[3],in_list[4],in_list[5],
+                                  in_list[6],in_list[7],in_list[8]))
+    return True
+
 class sud_puzzle:
     
-    def __init__(self,difficulty):
+    def __init__(self,difficulty='Easy'):
         self.difficulty = difficulty
         dif_levels = ('Easy','Medium','Hard')
         default_dif = dif_levels[0]
@@ -54,7 +61,7 @@ class sud_puzzle:
         
         # Easy puzzle
         if self.difficulty == dif_levels[0]:
-            sud_puzzle.puzzle = [[0,4,9,0,3,1,0,0,7], 
+            self.puzzle = [[0,4,9,0,3,1,0,0,7], 
                              [0,3,0,0,7,0,9,8,0],
                              [8,0,7,0,4,0,0,0,3],
                              [0,0,6,1,5,7,8,3,2],
@@ -66,7 +73,7 @@ class sud_puzzle:
         
         # Medium puzzle 
         if self.difficulty == dif_levels[1]:
-            sud_puzzle.puzzle = [[0,0,0,0,5,6,0,9,0], 
+            self.puzzle = [[0,0,0,0,5,6,0,9,0], 
                              [1,4,9,0,0,0,0,0,0],
                              [0,8,0,3,0,9,0,2,0],
                              [0,0,3,0,6,0,0,0,5],
@@ -78,15 +85,27 @@ class sud_puzzle:
         
         # Hard puzzle (placeholder, still easy for now)
         if self.difficulty == dif_levels[2]:
-            sud_puzzle.puzzle = [[0,4,9,0,3,1,0,0,7], 
-                             [0,3,0,0,7,0,9,8,0],
-                             [8,0,7,0,4,0,0,0,3],
-                             [0,0,6,1,5,7,8,3,2],
-                             [7,5,3,2,8,4,1,0,6],
-                             [0,1,0,3,0,0,7,4,5],
-                             [0,8,5,7,0,3,4,0,9],
-                             [0,0,2,4,0,5,3,7,8],
-                             [3,7,4,0,2,0,5,0,1]]
-
-        
-
+            self.puzzle = [[0,0,8,0,0,9,5,0,0], 
+                             [5,0,0,4,0,3,0,0,9],
+                             [0,0,0,0,0,0,0,0,7],
+                             [7,8,0,0,0,0,2,0,0],
+                             [0,9,2,0,6,0,8,1,0],
+                             [0,0,4,0,0,0,0,9,5],
+                             [0,7,0,0,0,0,0,0,0],
+                             [9,0,0,1,0,6,0,0,7],
+                             [0,0,1,2,0,0,3,0,0]]
+    
+    def display(self):
+        print('-------------------------')
+        display_sudoku_row(self.puzzle[0][:])
+        display_sudoku_row(self.puzzle[1][:])
+        display_sudoku_row(self.puzzle[2][:])
+        print('-------------------------')
+        display_sudoku_row(self.puzzle[3][:])
+        display_sudoku_row(self.puzzle[4][:])
+        display_sudoku_row(self.puzzle[5][:])
+        print('-------------------------')
+        display_sudoku_row(self.puzzle[6][:])
+        display_sudoku_row(self.puzzle[7][:])
+        display_sudoku_row(self.puzzle[8][:])
+        print('-------------------------')
